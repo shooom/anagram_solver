@@ -21,3 +21,20 @@ test {
 ext {
     javaMainClass = "org.example.Main"
 }
+
+jar {
+    manifest {
+        attributes(
+                "Main-Class": javaMainClass
+        )
+    }
+}
+
+task runDemoApp(type: Exec) {
+    dependsOn jar
+    group = "Execution"
+    description = "Run the output executable jar with ExecTask"
+    commandLine "java", "-jar", jar.archiveFile.get()
+    standardInput = System.in
+
+}
