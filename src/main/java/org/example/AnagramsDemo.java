@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.anagram.GroupAnagrams;
-import org.example.anagram.ValidAnagram;
+import org.example.anagram.AnagramResolver;
+import org.example.anagram.Utils.AnagramUtils;
 
 import java.util.List;
 import java.util.Scanner;
@@ -11,6 +11,12 @@ import static java.lang.String.format;
 public class AnagramsDemo {
 
     private static final String CLOSE_SYMBOL = "3";
+
+    private final AnagramResolver resolver;
+
+    public AnagramsDemo(AnagramResolver resolver) {
+        this.resolver = resolver;
+    }
 
     public void runDemo() {
         Scanner sc = new Scanner(System.in);
@@ -45,23 +51,22 @@ public class AnagramsDemo {
     }
 
     public void findAnagramsInList(Scanner sc) {
-        System.out.println("Enter a list of words (devided by comma)");
         sc.nextLine();
-        String casesStr = sc.nextLine();
-        String[] cases = casesStr.split(",\\s+");
-        List<List<String>> anagrams = GroupAnagrams.findAnagrams(cases);
-        System.out.println(format("The groupped anagrams are %s", GroupAnagrams.printAnagrams(anagrams)));
-        sc.nextLine();
+        System.out.println("Enter a word:");
+        String baseStr = sc.nextLine();
+        List<String> anagrams = resolver.findAnagrams(baseStr);
+        System.out.println(format("The anagrams for word %s : %s", baseStr, AnagramUtils.printAnagrams(anagrams)));
     }
 
     public void validateTwoStrings(Scanner sc) {
+        sc.nextLine();
         System.out.println("Enter the first word:\n");
-        String first = sc.next();
+        String first = sc.nextLine();
 
         System.out.println("Enter the second word:\n");
-        String second = sc.next();
+        String second = sc.nextLine();
 
-        if (ValidAnagram.isAnagram(first, second)) {
+        if (resolver.isAnagram(first, second)) {
             System.out.println(format("%s & %s are anagrams!", first, second));
         } else {
             System.out.println(format("%s & %s are not anagrams!", first, second));
