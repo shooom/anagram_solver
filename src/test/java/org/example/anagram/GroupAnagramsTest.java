@@ -1,31 +1,28 @@
 package org.example.anagram;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GroupAnagramsTest {
 
-    @ParameterizedTest
-    @MethodSource("getAnagramsData")
-    void findAnagrams_success(String[] anagrams, int resultSize) {
-        List<List<String>> result = GroupAnagrams.findAnagrams(anagrams);
+    private final AnagramResolver anagramResolver = new AnagramResolver();
 
-        assertEquals(resultSize, result.size());
-    }
+    @Test
+    public void findAnagram_success() {
+        String a = "tea";
+        String b = "ate";
+        String c = "abc";
+        String d = "eta";
 
-    private static Stream<Arguments> getAnagramsData() {
-        String[] strs = {"eat","tea","tan","ate","nat","bat"};
-        String[] strs1 = {"Lies, let's recount", "tan","ate", "Election results", "nat","I not select rules"};
+        anagramResolver.isAnagram(a, b);
+        anagramResolver.isAnagram(a, c);
+        anagramResolver.isAnagram(a, d);
 
-        return Stream.of(
-                Arguments.of(strs, 3),
-                Arguments.of(strs1, 3)
-        );
+        assertTrue(anagramResolver.findAnagrams(a).containsAll(Arrays.asList(b, d)));
+        assertTrue(anagramResolver.findAnagrams(b).containsAll(Arrays.asList(a, d)));
+        assertTrue(anagramResolver.findAnagrams(c).isEmpty());
     }
 }
